@@ -1,73 +1,62 @@
-# React + TypeScript + Vite
+# web-sem3-lab4-frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Фронт 4 лабы
 
-Currently, two official plugins are available:
+Внимание! У разных вариантов разный текст задания!
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Переписать приложение из предыдущей лабораторной работы с использованием следующих технологий:
 
-## React Compiler
+- Уровень back-end должен быть основан на Java EE (необходимо использовать EJB).
+- Уровень front-end должен быть построен на React + Redux (необходимо использовать ES6 и JSX) с использованием набора компонентов PrimeReact
+- Взаимодействие между уровнями back-end и front-end должно быть организовано посредством REST API.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Приложение по-прежнему должно включать в себя 2 страницы - стартовую и основную страницу приложения. Обе страницы приложения должны быть адаптированы для отображения в 3 режимах:
 
-## Expanding the ESLint configuration
+- "Десктопный" - для устройств, ширина экрана которых равна или превышает 1193 пикселей.
+- "Планшетный" - для устройств, ширина экрана которых равна или превышает 829, но меньше 1193 пикселей.
+- "Мобильный"- для устройств, ширина экрана которых меньше 829 пикселей.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Стартовая страница должна содержать следующие элементы:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- "Шапку", содержащую ФИО студента, номер группы и номер варианта.
+- Форму для ввода логина и пароля. Информация о зарегистрированных в системе пользователях должна храниться в отдельной таблице БД (пароль должен храниться в виде хэш-суммы). Доступ неавторизованных пользователей к основной странице приложения должен быть запрещён.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Основная страница приложения должна содержать следующие элементы:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Набор полей ввода для задания координат точки и радиуса области в соответствии с вариантом задания: Dropdown {'-2','-1.5','-1','-0.5','0','0.5','1','1.5','2'} для координаты по оси X, Slider (-3 ... 5) для координаты по оси Y, и Dropdown {'-2','-1.5','-1','-0.5','0','0.5','1','1.5','2'} для задания радиуса области. Если поле ввода допускает ввод заведомо некорректных данных (таких, например, как буквы в координатах точки или отрицательный радиус), то приложение должно осуществлять их валидацию.
+- Динамически обновляемую картинку, изображающую область на координатной плоскости в соответствии с номером варианта и точки, координаты которых были заданы пользователем. Клик по картинке должен инициировать сценарий, осуществляющий определение координат новой точки и отправку их на сервер для проверки её попадания в область. Цвет точек должен зависить от факта попадания / непопадания в область. Смена радиуса также должна инициировать перерисовку картинки.
+- Таблицу со списком результатов предыдущих проверок.
+- Ссылку, по которой аутентифицированный пользователь может закрыть свою сессию и вернуться на стартовую страницу приложения.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Дополнительные требования к приложению:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Все результаты проверки должны сохраняться в базе данных под управлением СУБД PostgreSQL.
+- Для доступа к БД необходимо использовать JPA.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+![img.png](img.png)
+
+### Вопросы к защите лабораторной работы:
+
+- Платформа Java EE. Спецификации и их реализации.
+- Принципы IoC, CDI и Location Transpanency. Компоненты и контейнеры.
+- Управление жизненным циклом компонентов. Дескрипторы развёртывания.
+- Java EE API. Виды компонентов. Профили платформы Java EE.
+- Компоненты EJB. Stateless & Stateful Session Beans. EJB Lite и EJB Full.
+- Работа с электронной почтой в Java EE. JavaMail API.
+- JMS. Реализация очередей сообщений. Способы доставки сообщений до клиента. Message-Driven Beans.
+- Понятие транзакции. Управление транзакциями в Java EE. JTA.
+- Веб-сервисы. Технологии JAX-RS и JAX-WS.
+- Платформа Spring. Сходства и отличия с Java EE.
+- Модули Spring. Архитектура Spring Runtime. Spring Security и Spring Data.
+- Реализация IoC и CDI в Spring. Сходства и отличия с Java EE.
+- Реализация REST API в Java EE и Spring.
+- React JS. Архитектура и основные принципы разработки приложений.
+- Компоненты React. State & props. "Умные" и "глупые" компоненты.
+- Разметка страниц в React-приложениях. JSX.
+- Навигация в React-приложениях. ReactRouter.
+- Управление состоянием интерфейса. Redux.
+- Angular: архитектура и основные принципы разработки приложений.
+- Angular: модули, компоненты, сервисы и DI.
+- Angular: шаблоны страниц, жизненный цикл компонентов, подключение CSS.
+- Angular: клиент-серверное взаимодействие, создание, отправка и валидация данных форм.
+
