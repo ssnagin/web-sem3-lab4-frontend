@@ -1,5 +1,7 @@
 @use "../../../styles/colors";
 
+@use "sass:color";
+
 .nav {
-  background-color: mix( colors.$sn-magenta, rgba(194, 0, 255, 0.49)) !important;
+  background-color: color.mix( colors.$sn-magenta, rgba(194, 0, 255, 0.49)) !important;
 }

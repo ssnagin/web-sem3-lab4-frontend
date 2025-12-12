@@ -1,9 +1,11 @@
 import classes from "./DefaultMain.module.scss";
 import {SnForm} from "../../sections/SnForm/SnForm.tsx";
 
-import coords from "../../../assets/images/img.png";
 import Markdown from "react-markdown";
 import task from "../../../assets/markdown/task.md";
+
+import {SnCoordsTable} from "../../sections/SnCoordsTable/SnCoordsTable.tsx";
+import {SnCoordinatesCanvases} from "../../sections/SnCoordinatesCanvases/SnCoordinatesCanvases.tsx";
 
 export const DefaultMain = () => {
     return (
@@ -19,9 +21,13 @@ export const DefaultMain = () => {
                 <div className="col-lg-7 col-xl-7">
                     <section className={classes.section}>
                         <div>
-
+                            <SnCoordinatesCanvases />
                         </div>
 
+                    </section>
+
+                    <section className={classes.section}>
+                        <SnCoordsTable></SnCoordsTable>
                     </section>
 
                     <section className={classes.section}>
