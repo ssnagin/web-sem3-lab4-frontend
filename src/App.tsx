@@ -1,16 +1,22 @@
 import './styles/App.scss';
-import LoginPage from "./pages/LoginPage/LoginPage.tsx";
 import {MainPage} from "./pages/MainPage/MainPage.tsx";
+import {PrimeReactProvider} from "primereact/api";
+
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 
 function App() {
-  return (
-    <>
 
+    return (
+    <>
         <div className="container-fluid">
-            <MainPage />
+            <PrimeReactProvider>
+                <MainPage />
+            </PrimeReactProvider>
         </div>
     </>
-  )
+    )
 }
 
 export default App;

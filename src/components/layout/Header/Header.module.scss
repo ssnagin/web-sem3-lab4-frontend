@@ -1,5 +1,24 @@
+@use "../../../styles/colors";
+
 .header {
-  height: 400px;
-  background-color: #e9edf4;
-  
+  height: 190px;
+  background-color: colors.$sn-magenta;
+
+  >* {
+    padding-top: 10px;
+  }
+
+  p {
+    color: colors.$sn-white;
+  }
+}
+
+.h1_title {
+  color: colors.$sn-pink;
+}
+
+@media (min-width: 1200px) {
+  .h1_title {
+    font-size: 3.4rem;
+  }
 }

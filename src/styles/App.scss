@@ -1,10 +1,9 @@
-@import '../../node_modules/bootstrap/scss/bootstrap';
+@use '../../node_modules/bootstrap/scss/bootstrap';
 
-// FONTS IMPORTS
+@use "fonts/Sarbina";
+@use "fonts/Hack";
 
-@import "../assets/fonts/Sabrina/stylesheet.css";
-
-* {
+#root > .container-fluid {
   padding: 0 !important;
   margin: 0 !important;
 }

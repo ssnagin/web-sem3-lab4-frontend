@@ -1,6 +1,8 @@
+import classes from "./Navbar.module.scss";
+
 export const Navbar = () => {
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className={classes.nav + " navbar navbar-expand-lg navbar-light bg-light"}>
             <div className="container-fluid">
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

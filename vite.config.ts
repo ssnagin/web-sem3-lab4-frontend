@@ -1,9 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import fs from 'fs'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: 'markdown-loader',
+      transform(_code, id) {
+        if (id.endsWith('.md')) {
+          const content = fs.readFileSync(id, 'utf-8');
+          return `export default ${JSON.stringify(content)};`;
+        }
+      }
+    }
+  ],
   css: {
     preprocessorOptions: {
       scss: {
