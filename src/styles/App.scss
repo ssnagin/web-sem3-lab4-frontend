@@ -1,6 +1,10 @@
 @import '../../node_modules/bootstrap/scss/bootstrap';
 
+// FONTS IMPORTS
+
+@import "../assets/fonts/Sabrina/stylesheet.css";
+
 * {
-  padding: 0;
-  margin: 0;
+  padding: 0 !important;
+  margin: 0 !important;
 }

@@ -1,13 +1,11 @@
+import classes from './Header.module.scss';
+
+
 function Header(){
+
     return (
-        <header className="header">
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col-12">
-                        Тестовый хэдр хихи-хаха
-                    </div>
-                </div>
-            </div>
+        <header className={classes.header + " w-100 "}>
+
         </header>
     )
 }
