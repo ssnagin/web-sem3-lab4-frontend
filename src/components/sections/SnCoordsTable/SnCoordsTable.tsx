@@ -14,13 +14,13 @@ export const SnCoordsTable = () => {
     return (
         <>
             <DataTable value={products} tableStyle={{ minWidth: '50rem' }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]}>
-                <Column field="id" header="ID"></Column>
-                <Column field="x" header="x"></Column>
-                <Column field="y" header="y"></Column>
-                <Column field="r" header="r"></Column>
-                <Column field="status" header="Статус"></Column>
-                <Column field="creation_datetime" header="Дата броска"></Column>
-                <Column field="milliseconds" header="Milliseconds"></Column>
+                <Column sortable={true} field="id" header="ID"></Column>
+                <Column sortable={true} field="x" header="x"></Column>
+                <Column sortable={true} field="y" header="y"></Column>
+                <Column sortable={true} field="r" header="r"></Column>
+                <Column sortable={true} field="status" header="Статус"></Column>
+                <Column sortable={true} field="creation_datetime" header="Дата броска"></Column>
+                <Column sortable={true} field="milliseconds" header="Milliseconds"></Column>
             </DataTable>
         </>
     )

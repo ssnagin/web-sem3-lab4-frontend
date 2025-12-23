@@ -1,17 +1,23 @@
 import {Dropdown} from "primereact/dropdown";
-import {useState} from "react";
 
 import classes from "./SnForm.module.scss";
 import {Slider} from "primereact/slider";
 import {Button} from "primereact/button";
+import type {RootState} from "../../../redux/store.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {setR, setX, setY} from "../../../redux/slices/formSlice.ts";
+import {SuperButton} from "../../ui/Button/SuperButton.tsx";
 
 export const SnForm = () => {
+    const dispatch = useDispatch();
 
-    const [x, setX] = useState("");
-    const [y, setY] = useState(0);
-    const [r, setR] = useState("");
+    const data = {
+        x: useSelector((state: RootState) => state.form.x),
+        y: useSelector((state: RootState) => state.form.y),
+        r: useSelector((state: RootState) => state.form.r),
+    };
 
-    const xrValues = ["-2", "-1.5", "-1", "-0.5", "0", "0.5", "1", "1.5", "2"];
+    const xrValues = ["0.5", "1", "1.5", "2"];
 
     return (
         <form method={"POST"} className={classes.form + " d-flex flex-column justify-content-start p-3"}>
@@ -22,36 +28,35 @@ export const SnForm = () => {
             <label>Значение X</label>
 
             <Dropdown
-                value={x}
-                onChange={(e) => setX(e.value)}
+                value={data.x}
+                onChange={(e) => dispatch(setX(String(e.value)))}
                 options={xrValues}
                 placeholder={"Выберите x"}
             />
 
-            <label>Значение Y: {y}</label>
+            <label>Значение Y: {data.y}</label>
 
             <Slider
-                value={y}
+                value={Number(data.y)}
                 min={-2}
                 max={2}
                 step={0.001}
                 onChange={(e) => {
-                    if (typeof e.value === "number") {
-                        setY(e.value);
-                    }
+                    dispatch(setY(String(e.value)));
                 }}
             />
 
             <label>Значение R</label>
 
             <Dropdown
-                value={r}
-                onChange={(e) => setR(e.value)}
+                value={data.r}
+                onChange={(e) => dispatch(setR(String(e.value)))}
                 options={xrValues}
                 placeholder={"Выберите радиус"}
             />
 
-            <Button type={"submit"} label={"test"} />
+            <Button type={"submit"} label={"Бросить точку"} />
+            <SuperButton type={"submit"} label={"Бросить супер-точку!"} />
         </form>
     )
 }

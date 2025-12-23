@@ -19,7 +19,7 @@ function App() {
         <div className="container-fluid">
             <PrimeReactProvider>
                 <Routes>
-                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/login" element={<MainPage />} />
                     <Route element={<ProtectedRoute />}>
                         <Route path={"/"} element={<MainPage />} />
                     </Route>
