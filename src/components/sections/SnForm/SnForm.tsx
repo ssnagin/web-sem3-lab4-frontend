@@ -6,7 +6,6 @@ import {Button} from "primereact/button";
 import type {RootState} from "../../../redux/store.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {setR, setX, setY} from "../../../redux/slices/formSlice.ts";
-import {SuperButton} from "../../ui/Button/SuperButton.tsx";
 
 export const SnForm = () => {
     const dispatch = useDispatch();
@@ -56,7 +55,7 @@ export const SnForm = () => {
             />
 
             <Button type={"submit"} label={"Бросить точку"} />
-            <SuperButton type={"submit"} label={"Бросить супер-точку!"} />
+            <Button severity={'warning'} type={"submit"} label={"Бросить супер-точку!"} />
         </form>
     )
 }
