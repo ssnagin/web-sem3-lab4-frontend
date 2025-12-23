@@ -1,5 +1,8 @@
 import Header from "../../components/layout/Header/Header.tsx";
 import {useState, type FormEvent, type ChangeEvent} from "react";
+import {InputText} from "primereact/inputtext";
+import {Button} from "primereact/button";
+import classes from "./LoginPage.module.scss";
 
 function LoginPage() {
     const [formParams, setFormParams] = useState<{
@@ -28,25 +31,29 @@ function LoginPage() {
             <Header />
 
             <div className="row d-flex justify-content-center align-items-center">
-                <div className="col-5 align-self-center d-flex flex-column align-items-center">
+                <div className="col-6 align-self-center d-flex flex-column align-items-center">
                     <form 
-                        className={"align-self-center d-flex flex-column align-items-center"}
+                        className={classes.form + " align-self-center d-flex flex-column align-items-center"}
                         onSubmit={handleSubmit}
                     >
                         <h2 className=""><b>Войти</b></h2>
-                        <input 
-                            type={"text"} 
-                            onChange={handleInputChange('login')} 
-                            value={formParams.login}
-                            placeholder={"Логин"} 
+
+                        <InputText
+
+                        type={"text"}
+                        onChange={handleInputChange('login')}
+                        value={formParams.login}
+                        placeholder={"Логин"}
+
                         />
-                        <input 
-                            type={"password"} 
-                            onChange={handleInputChange('password')} 
+                        <InputText
+                            type={"password"}
+                            onChange={handleInputChange('password')}
                             value={formParams.password}
-                            placeholder={"Пароль"} 
+                            placeholder={"Пароль"}
                         />
-                        <input type={"submit"} value={"Войти уже наконец-то!"} />
+
+                        <Button type={"submit"} label={"Войти уже наконец-то!"} />
                     </form>
                 </div>
             </div>

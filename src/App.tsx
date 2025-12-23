@@ -6,17 +6,25 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import LoginPage from './pages/LoginPage/LoginPage.tsx';
-import {useState} from "react";
+// import {useState} from "react";
+import {Route, Routes} from "react-router-dom";
+import {ProtectedRoute} from "./components/routes/ProtectedRoute.tsx";
 
 function App() {
 
-    const [isLoginPage, setIsLoginPage] = useState(false);
+    // const [isLoginPage, setIsLoginPage] = useState(false);
 
     return (
     <>
         <div className="container-fluid">
             <PrimeReactProvider>
-                {isLoginPage ? <LoginPage  /> : <MainPage />}
+                <Routes>
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route element={<ProtectedRoute />}>
+                        <Route path={"/"} element={<MainPage />} />
+                    </Route>
+                    <Route path={"*"} element={<ProtectedRoute />} />
+                </Routes>
             </PrimeReactProvider>
         </div>
     </>
