@@ -12,11 +12,16 @@ export const SnCoordinatesCanvases = () => {
 
     const currentRadius = useSelector((state: RootState) => state.form.r)
 
+    const testPoints = [
+        { x: 1, y: 1, hit: true },
+        { x: -1, y: -1, hit: false }
+    ];
+
     return (
         <>
             <div className={classes.canvases + " row"}>
                 <div className={"col-lg-9"}>
-                    <SnCanvas  r={Number(currentRadius)} points={[]} onPointClick={onClick}/>
+                    <SnCanvas  r={Number(currentRadius)} points={testPoints} onPointClick={onClick}/>
                 </div>
                 <div className={"col-lg-3"}>
                     <h3><b>Скины:</b></h3>
