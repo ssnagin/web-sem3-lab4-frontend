@@ -88,7 +88,13 @@ export const deleteAllMyPoints = createAsyncThunk<void, string>(
 const pointsSlice = createSlice({
     name: 'points',
     initialState,
-    reducers: {},
+    reducers: {
+        updateFromWebSocket: (state, action: PayloadAction<Point2DRow[]>) => {
+            state.data = action.payload;
+            state.loading = false;
+            state.error = null;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchAllPoints.pending, (state) => {

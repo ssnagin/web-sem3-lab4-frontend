@@ -7,7 +7,7 @@ import task from "../../../assets/markdown/task.md";
 import {SnCoordsTable} from "../../sections/SnCoordsTable/SnCoordsTable.tsx";
 import {SnCoordinatesCanvases} from "../../sections/SnCoordinatesCanvases/SnCoordinatesCanvases.tsx";
 import {SnProfileSettings} from "../../sections/SnProfileSettings/SnProfileSettings.tsx";
-import {useEffect} from "react";
+import {useCallback, useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchAllPoints} from "../../../redux/slices/pointsSlice.ts";
 import type {RootState} from "../../../redux/store.ts";
@@ -17,13 +17,58 @@ import type { AppDispatch } from "../../../redux/store.ts";
 export const DefaultMain = () => {
 
     const dispatch = useDispatch<AppDispatch>();
-    const { token } = useSelector((state: RootState) => state.auth);
+    const { token, isAuthenticated } = useSelector((state: RootState) => state.auth);
+    const wsRef = useRef<WebSocket | null>(null);
+
+    const connectWebSocket = useCallback(() => {
+        if (!token || wsRef.current?.readyState === WebSocket.OPEN) return;
+
+        const wsUrl = `wss://itmo.ssngn.ru/lab4/ws/points/${token}`;
+        const ws = new WebSocket(wsUrl);
+        wsRef.current = ws;
+
+        ws.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                // [{id, x, y, R, inArea, timestamp, executionTime, username}]
+                if (Array.isArray(data)) {
+
+                    dispatch({
+                        type: 'points/updateFromWebSocket',
+                        payload: data.map((p: any) => ({
+                            id: p.id,
+                            x: p.x,
+                            y: p.y,
+                            R: p.R,
+                            inArea: p.inArea,
+                            executionTime: p.executionTime,
+                            timestamp: p.timestamp,
+                            username: p.username,
+                        })),
+                    });
+                }
+            } catch (err) {
+                console.error("Ошибка обработки WebSocket-сообщения:", err);
+            }
+        };
+
+        ws.onopen = () => console.log("WebSocket подключен");
+        ws.onerror = (err) => console.error("WebSocket ошибка:", err);
+        ws.onclose = () => console.log("WebSocket закрыт");
+    }, [token, dispatch]);
 
     useEffect(() => {
-        if (token) {
-            dispatch(fetchAllPoints(token));
+        if (isAuthenticated && token) {
+            connectWebSocket();
         }
-    }, [dispatch, token]);
+
+        return () => {
+            if (wsRef.current) {
+                wsRef.current.close();
+                wsRef.current = null;
+            }
+        };
+    }, [isAuthenticated, token, connectWebSocket]);
 
     return (
         <main className="container-fluid mt-4">

@@ -1,28 +1,41 @@
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
-import {useSelector} from "react-redux";
-import type {RootState} from "../../../redux/store.ts";
+import {useDispatch, useSelector} from "react-redux";
+import type {AppDispatch, RootState} from "../../../redux/store.ts";
+import {Button} from "primereact/button";
+import type {Point2DRow} from "../../../redux/slices/pointsSlice.ts";
+import toast from "react-hot-toast";
+
+import { deletePoint, fetchAllPoints } from "../../../redux/slices/pointsSlice.ts";
 
 export const SnCoordsTable = () => {
     const points = useSelector((state: RootState) => state.points.data);
     const myUsername = useSelector((state: RootState) => state.auth.username);
 
-    // Функция для определения, можно ли удалять
+    const { token, isAuthenticated } = useSelector((state: RootState) => state.auth);
+    const dispatch = useDispatch<AppDispatch>();
+
+
     const isMyPoint = (username: string) => username === myUsername;
 
-    // Колонки
-    const actionBodyTemplate = (rowData: any) => {
+    const actionBodyTemplate = (rowData: Point2DRow) => {
         if (!isMyPoint(rowData.username)) return null;
         return (
-            <button
-                className="p-button p-button-danger p-button-text"
-                onClick={() => {
-                    // dispatch(deletePoint({ id: rowData.id, token }))
-                    // + после этого dispatch(fetchAllPoints(token))
+            <Button
+                icon="pi pi-trash"
+                severity="danger"
+                rounded
+                onClick={async () => {
+                    if (!token) return;
+                    try {
+                        await dispatch(deletePoint({ id: rowData.id, token })).unwrap();
+                        dispatch(fetchAllPoints(token)); // или полагаться на WebSocket
+                        toast.success("Точка удалена");
+                    } catch (err: any) {
+                        toast.error("Не удалось удалить точку");
+                    }
                 }}
-            >
-                Удалить
-            </button>
+            />
         );
     };
 
