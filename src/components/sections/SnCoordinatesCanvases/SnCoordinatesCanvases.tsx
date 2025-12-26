@@ -10,6 +10,8 @@ import stars from "../../../assets/images/skins/stars.png";
 import russia from "../../../assets/images/skins/russia.jpg";
 import nostalgia from "../../../assets/images/skins/nostalgia.jpeg";
 import null_ from "../../../assets/images/skins/null.png";
+import {logout} from "../../../redux/slices/authSlice.ts";
+import toast from "react-hot-toast";
 
 
 const SKINS = [
@@ -54,9 +56,51 @@ export const SnCoordinatesCanvases = () => {
         if (token) dispatch(fetchAllPoints(token));
     }, [dispatch, token]);
 
-    // const handlePointClick = () => {
-    //     // throw point event тут
-    // };
+    const handleCanvasClick = async (point: { x: number; y: number; r: number }) => {
+        if (!token) {
+            toast.error("Вы не авторизованы!");
+            return;
+        }
+
+        const { x, y, r } = point;
+        if (y < -3 || y > 5) {
+            toast.error("Y должен быть от -3 до 5");
+            return;
+        }
+
+        try {
+            const response = await fetch('https://itmo.ssngn.ru/lab4/api/point/save/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'snAuthToken': token,
+                },
+                body: JSON.stringify({
+                    x: x.toFixed(3),
+                    y: y.toFixed(3),
+                    R: r,
+                }),
+            });
+
+            const result = await response.json();
+            if (response.status === 401) {
+                dispatch(logout());
+                toast.error("Сессия истекла. Войдите снова.");
+                return;
+            }
+
+            if (!response.ok) {
+                toast.error(result.message || "Ошибка отправки точки");
+                return;
+            }
+
+            toast.success("Точка добавлена!");
+            dispatch(fetchAllPoints(token));
+        } catch (err) {
+            console.error(err);
+            toast.error("Не удалось отправить точку");
+        }
+    };
 
     return (
         <>
@@ -76,7 +120,7 @@ export const SnCoordinatesCanvases = () => {
                                         y: p.y,
                                         hit: p.inArea,
                                     }))}
-                                    onPointClick={() => {}}
+                                    onPointClick={(point) => handleCanvasClick({ ...point, r })}
                                 />
                             </div>
                         );
