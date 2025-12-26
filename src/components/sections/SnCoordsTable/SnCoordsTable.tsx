@@ -4,8 +4,6 @@ import {useSelector} from "react-redux";
 import type {RootState} from "../../../redux/store.ts";
 
 export const SnCoordsTable = () => {
-
-    const { token } = useSelector((state: RootState) => state.auth);
     const points = useSelector((state: RootState) => state.points.data);
     const myUsername = useSelector((state: RootState) => state.auth.username);
 

@@ -104,7 +104,7 @@ const pointsSlice = createSlice({
                 state.error = action.payload as string || 'Failed to load points';
             })
 
-            .addCase(deletePoint.fulfilled, (state, action) => {})
+            // .addCase(deletePoint.fulfilled, (state, action) => {})
         ;
     },
 });

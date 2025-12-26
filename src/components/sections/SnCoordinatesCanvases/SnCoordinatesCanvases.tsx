@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../../../redux/store.ts";
 import classes from "./SnCoordinatesCanvases.module.scss";
 import {Dropdown} from "primereact/dropdown";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {fetchAllPoints} from "../../../redux/slices/pointsSlice.ts";
 
 const fetchPoints = async (token: string): Promise<SnPoint[]> => {
@@ -40,6 +40,7 @@ export const SnCoordinatesCanvases = () => {
     }, [dispatch, token]);
 
     const handlePointClick = () => {
+        // throw point event тут
     };
 
     return (
