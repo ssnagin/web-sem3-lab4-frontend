@@ -3,8 +3,21 @@ import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../../../redux/store.ts";
 import classes from "./SnCoordinatesCanvases.module.scss";
 import {Dropdown} from "primereact/dropdown";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {fetchAllPoints} from "../../../redux/slices/pointsSlice.ts";
+
+import stars from "../../../assets/images/skins/stars.png";
+import russia from "../../../assets/images/skins/russia.jpg";
+import nostalgia from "../../../assets/images/skins/nostalgia.jpeg";
+import null_ from "../../../assets/images/skins/null.png";
+
+
+const SKINS = [
+    { label: "Безмятежность", value: nostalgia },
+    { label: "Звёзды", value: stars },
+    { label: "Россия-матушка", value: russia },
+    {label: "Ничего", value: null_}
+];
 
 const fetchPoints = async (token: string): Promise<SnPoint[]> => {
     const res = await fetch('https://itmo.ssngn.ru/lab4/api/point/all', {
@@ -26,6 +39,8 @@ const fetchPoints = async (token: string): Promise<SnPoint[]> => {
 };
 
 export const SnCoordinatesCanvases = () => {
+
+    const [selectedSkin, setSelectedSkin] = useState<string>(null_);
 
     const dispatch = useDispatch()
 
@@ -55,6 +70,7 @@ export const SnCoordinatesCanvases = () => {
                                 <h5>Радиус: {r}</h5>
                                 <SnCanvas
                                     r={r}
+                                    backgroundImage={selectedSkin}
                                     points={filtered.map(p => ({
                                         x: p.x,
                                         y: p.y,
@@ -68,7 +84,13 @@ export const SnCoordinatesCanvases = () => {
                 </div>
                 <div className={"col-lg-3"}>
                     <h3><b>Скины:</b></h3>
-                    <Dropdown />
+                    <Dropdown
+                        value={selectedSkin}
+                        options={SKINS}
+                        onChange={(e) => setSelectedSkin(e.value as string)}
+                        optionLabel="label"
+                        placeholder="Выберите скин"
+                    />
                 </div>
             </div>
         </>

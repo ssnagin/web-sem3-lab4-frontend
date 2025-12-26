@@ -1,5 +1,7 @@
 import type {KonvaEventObject} from "konva/lib/Node";
-import {Arc, Circle, Group, Layer, Line, Rect, Stage, Text} from "react-konva";
+import {Image as KonvaImage, Arc, Circle, Group, Layer, Line, Rect, Stage, Text} from "react-konva";
+import React, {useEffect, useRef, useState} from "react";
+import {Konva} from "konva/lib/_FullInternals";
 
 const CANVAS_SIZE = 600;
 const GRID_UNITS = 3;    // -3 to 3
@@ -18,12 +20,27 @@ export interface SnCanvasProps {
     r: number;
     points?: SnPoint[];
     onPointClick?: (point: SnPoint) => void;
+    backgroundImage?: string;
 }
 
 export const SnCanvas: React.FC<SnCanvasProps> = ({
     r,
     points = [],
-    onPointClick}) => {
+    onPointClick,
+    backgroundImage}) => {
+
+    const [image, setImage] = useState<HTMLImageElement | null>(null);
+
+    useEffect(() => {
+        if (!backgroundImage) {
+            setImage(null);
+            return;
+        }
+        const img = new window.Image();
+        img.src = backgroundImage;
+        img.onload = () => setImage(img);
+        img.onerror = () => console.error("Failed to load background:", backgroundImage);
+    }, [backgroundImage]);
 
     const centerX = CANVAS_SIZE / 2;
     const centerY = CANVAS_SIZE / 2;
@@ -186,6 +203,17 @@ export const SnCanvas: React.FC<SnCanvasProps> = ({
         <div style={{ display: 'inline-block', margin: '0 auto' }}>
             <Stage width={CANVAS_SIZE} height={CANVAS_SIZE} onClick={handleClick}>
                 <Layer>
+                    {/* Фоновое изображение */}
+                    {image && (
+                        <KonvaImage
+                            image={image}
+                            width={CANVAS_SIZE}
+                            height={CANVAS_SIZE}
+                            opacity={0.3}
+                            listening={false} // чтобы не мешал кликам
+                        />
+                    )}
+
                     {renderGrid()}
                     {renderArea()}
                     {renderPoints()}
