@@ -1,43 +1,63 @@
 // src/redux/slices/authSlice.ts
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import {clearAuthToken, getAuthToken, setAuthToken} from "../../utils/cookies.ts";
 
 interface AuthState {
     isAuthenticated: boolean;
     username?: string;
+    token?: string;
 }
 
 const initialState: AuthState = {
     isAuthenticated: false,
     username: undefined,
+    token: undefined,
+};
+
+const isTokenExpired = (token: string): boolean => {
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return Date.now() >= payload.exp * 1000;
+    } catch (e) {
+        return true;
+    }
 };
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        login(state, action: PayloadAction<{ username: string }>) {
-            state.isAuthenticated = true;
-            state.username = action.payload.username;
+        login(state, action: PayloadAction<{ username: string; token: string }>) {
+            const { username, token } = action.payload;
+            if (isTokenExpired(token)) return;
 
-            localStorage.setItem('auth', JSON.stringify({ isAuthenticated: true, username: action.payload.username }));
+            state.isAuthenticated = true;
+            state.username = username;
+            state.token = token;
+            setAuthToken(token);
         },
         logout(state) {
             state.isAuthenticated = false;
             state.username = undefined;
-            localStorage.removeItem('auth');
+            state.token = undefined;
+            clearAuthToken();
         },
-
         restoreAuth(state) {
-            const saved = localStorage.getItem('auth');
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    if (parsed.isAuthenticated) {
-                        state.isAuthenticated = true;
-                        state.username = parsed.username;
-                    }
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                } catch (_e) { /* empty */ }
+            const token = getAuthToken();
+            if (!token) return;
+
+            if (isTokenExpired(token)) {
+                clearAuthToken();
+                return;
+            }
+
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                state.isAuthenticated = true;
+                state.username = payload.sub;
+                state.token = token;
+            } catch (e) {
+                clearAuthToken();
             }
         },
     },

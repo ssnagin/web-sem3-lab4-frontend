@@ -5,10 +5,11 @@ import {PrimeReactProvider} from "primereact/api";
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import LoginPage from './pages/LoginPage/LoginPage.tsx';
 // import {useState} from "react";
 import {Route, Routes} from "react-router-dom";
 import {ProtectedRoute} from "./components/routes/ProtectedRoute.tsx";
+import LoginPage from "./pages/LoginPage/LoginPage.tsx";
+import {Toaster} from "react-hot-toast";
 
 function App() {
 
@@ -17,9 +18,12 @@ function App() {
     return (
     <>
         <div className="container-fluid">
+
+            <Toaster />
+
             <PrimeReactProvider>
                 <Routes>
-                    <Route path="/login" element={<MainPage />} />
+                    <Route path="/login" element={<LoginPage />} />
                     <Route element={<ProtectedRoute />}>
                         <Route path={"/"} element={<MainPage />} />
                     </Route>

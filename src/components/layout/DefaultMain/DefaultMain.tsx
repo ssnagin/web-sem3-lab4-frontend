@@ -6,6 +6,7 @@ import task from "../../../assets/markdown/task.md";
 
 import {SnCoordsTable} from "../../sections/SnCoordsTable/SnCoordsTable.tsx";
 import {SnCoordinatesCanvases} from "../../sections/SnCoordinatesCanvases/SnCoordinatesCanvases.tsx";
+import {SnProfileSettings} from "../../sections/SnProfileSettings/SnProfileSettings.tsx";
 
 export const DefaultMain = () => {
     return (
@@ -16,6 +17,9 @@ export const DefaultMain = () => {
 
                         <SnForm />
 
+                    </section>
+                    <section className={classes.section}>
+                        <SnProfileSettings />
                     </section>
                 </div>
                 <div className="col-lg-7 col-xl-7">

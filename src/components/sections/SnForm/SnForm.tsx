@@ -6,9 +6,36 @@ import {Button} from "primereact/button";
 import type {RootState} from "../../../redux/store.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {setR, setX, setY} from "../../../redux/slices/formSlice.ts";
+import {logout} from "../../../redux/slices/authSlice.ts";
 
 export const SnForm = () => {
     const dispatch = useDispatch();
+    const { token } = useSelector((state: RootState) => state.auth);
+
+    const submitPoint = async () => {
+        if (!token) return;
+
+        const response = await fetch('https://itmo.ssngn.ru/lab4/api/point/save/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'snAuthToken': token,
+            },
+            body: JSON.stringify({
+                x: data.x,
+                y: data.y,
+                R: data.r,
+            }),
+        });
+
+        if (response.status === 401) {
+            dispatch(logout());
+            return;
+        }
+
+        // Success!
+
+    };
 
     const data = {
         x: useSelector((state: RootState) => state.form.x),
@@ -19,7 +46,7 @@ export const SnForm = () => {
     const xrValues = ["0.5", "1", "1.5", "2"];
 
     return (
-        <form method={"POST"} className={classes.form + " d-flex flex-column justify-content-start p-3"}>
+        <form action={submitPoint} className={classes.form + " d-flex flex-column justify-content-start p-3"}>
             <div>
                 <h2><b>Отправить точку в полёт</b></h2>
             </div>
