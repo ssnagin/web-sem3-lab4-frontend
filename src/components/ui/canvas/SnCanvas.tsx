@@ -1,7 +1,6 @@
 import type {KonvaEventObject} from "konva/lib/Node";
 import {Image as KonvaImage, Arc, Circle, Group, Layer, Line, Rect, Stage, Text} from "react-konva";
-import React, {useEffect, useRef, useState} from "react";
-import {Konva} from "konva/lib/_FullInternals";
+import React, {useEffect, useState} from "react";
 
 const CANVAS_SIZE = 600;
 const GRID_UNITS = 3;    // -3 to 3

@@ -12,9 +12,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchAllPoints} from "../../../redux/slices/pointsSlice.ts";
 import type {RootState} from "../../../redux/store.ts";
 
+import type { AppDispatch } from "../../../redux/store.ts";
+
 export const DefaultMain = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const { token } = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
@@ -41,7 +43,6 @@ export const DefaultMain = () => {
                         <div>
                             <SnCoordinatesCanvases />
                         </div>
-
                     </section>
 
                     <section className={classes.section}>
