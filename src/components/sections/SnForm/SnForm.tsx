@@ -18,7 +18,9 @@ export const SnForm = () => {
         r: useSelector((state: RootState) => state.form.r),
     };
 
-    const xrValues = ["0.5", "1", "1.5", "2"];
+    const rValues = ["0.5", "1", "1.5", "2"];
+
+    const xValues = ["-2", "-1.5", "-1", "0", "0.5", "1", "1.5", "2"]
 
     const submitPoint = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -41,7 +43,7 @@ export const SnForm = () => {
             return;
         }
 
-        if (!xrValues.includes(data.r)) {
+        if (!rValues.includes(data.r)) {
             toast.error("Недопустимый радиус");
             return;
         }
@@ -91,7 +93,7 @@ export const SnForm = () => {
             <Dropdown
                 value={data.x}
                 onChange={(e) => dispatch(setX(String(e.value)))}
-                options={xrValues}
+                options={xValues}
                 placeholder={"Выберите x"}
             />
 
@@ -112,7 +114,7 @@ export const SnForm = () => {
             <Dropdown
                 value={data.r}
                 onChange={(e) => dispatch(setR(String(e.value)))}
-                options={xrValues}
+                options={rValues}
                 placeholder={"Выберите радиус"}
             />
 

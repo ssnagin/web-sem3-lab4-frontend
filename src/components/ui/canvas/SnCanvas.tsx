@@ -23,8 +23,8 @@ export interface SnCanvasProps {
 export const SnCanvas: React.FC<SnCanvasProps> = ({
     r,
     points = [],
-    onPointClick,
-}) => {
+    onPointClick}) => {
+
     const centerX = CANVAS_SIZE / 2;
     const centerY = CANVAS_SIZE / 2;
 

@@ -7,8 +7,22 @@ import task from "../../../assets/markdown/task.md";
 import {SnCoordsTable} from "../../sections/SnCoordsTable/SnCoordsTable.tsx";
 import {SnCoordinatesCanvases} from "../../sections/SnCoordinatesCanvases/SnCoordinatesCanvases.tsx";
 import {SnProfileSettings} from "../../sections/SnProfileSettings/SnProfileSettings.tsx";
+import {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchAllPoints} from "../../../redux/slices/pointsSlice.ts";
+import type {RootState} from "../../../redux/store.ts";
 
 export const DefaultMain = () => {
+
+    const dispatch = useDispatch();
+    const { token } = useSelector((state: RootState) => state.auth);
+
+    useEffect(() => {
+        if (token) {
+            dispatch(fetchAllPoints(token));
+        }
+    }, [dispatch, token]);
+
     return (
         <main className="container-fluid mt-4">
             <div className="row">
