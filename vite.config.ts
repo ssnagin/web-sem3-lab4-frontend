@@ -4,7 +4,10 @@ import fs from 'fs'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
+  
+	build: { sourcemap: true },
+	
+	plugins: [
     react(),
     {
       name: 'markdown-loader',
